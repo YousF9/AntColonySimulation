@@ -10,13 +10,12 @@ public class Node {
     private int yCoordinate;
     private Colony colony;
     ColonyNodeView nodeView;
-    boolean isQueen;
     boolean isMoving;
     boolean isVisible;
-    boolean isColonyEntrance;
-    LinkedList<Ant> antList;
-    LinkedList<Ant> addToList;
-    LinkedList<Ant> removeFromList;
+    Queen queen;
+    LinkedList<Scout> scoutList;
+    LinkedList<Soldier> soldierList;
+    LinkedList<Forager> foragerList;
 
     Node(ColonyNodeView nodeView, int xCoordinate, int yCoordinate) {
         Random random = new Random();
@@ -30,51 +29,44 @@ public class Node {
         this.yCoordinate = yCoordinate;
         this.nodeView = nodeView;
         isVisible = false;
-        isQueen = false;
+        scoutList = new LinkedList<>();
+        soldierList = new LinkedList<>();
+        foragerList = new LinkedList<>();
+    }
+
+    public void setQueen(Queen queen){
+        this.queen = queen;
+        nodeView.setQueen(true);
+        nodeView.showQueenIcon();
+    }
+
+    public void addSoldierAnt(Soldier ant) {
+        soldierList.add(ant);
+        nodeView.setSoldierCount(soldierList.size());
+        nodeView.showSoldierIcon();
+    }
+
+    public void addScoutAnt(Scout ant){
+        scoutList.add(ant);
+        nodeView.setScoutCount(scoutList.size());
+        nodeView.showScoutIcon();
+    }
+
+    public void addForagerAnt(Forager ant) {
+        foragerList.add(ant);
+        nodeView.setForagerCount(foragerList.size());
+        nodeView.showForagerIcon();
     }
 
     public void setFood(int unitOfFood) {
         food = unitOfFood;
+        nodeView.setFoodAmount(food);
+    }
+
+    public void setOpen() {
+        nodeView.showNode();
+
     }
 
 
-    public int getFood() {
-        return food;
-    }
-
-    public int getPheremone() {
-        return pheremone;
-    }
-
-    public void setPheremone(int pheremone) {
-        this.pheremone = pheremone;
-    }
-
-    public int getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public void setxCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public int getyCoordinate() {
-        return yCoordinate;
-    }
-
-    public void setyCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
-    }
-
-    public Colony getColony() {
-        return colony;
-    }
-
-    public void setColony(Colony colony) {
-        this.colony = colony;
-    }
-
-    public void updateNodeView() {
-
-    }
 }

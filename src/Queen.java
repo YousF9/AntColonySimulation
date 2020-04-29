@@ -1,21 +1,28 @@
 public class Queen extends Ant {
+    int nextId;
+    int defaultLifeSpan = 365;
 
-    public Queen(Node node) {
-        id = 0;
-        lifeSpan = 365 * 20;
-        nodeLocation = node;
+    public Queen() {
+        super(0, 7300);
+        nextId = 1;
     }
 
-    public void hatch(Ant ant) {
-        Ant hatchedAnt;
-        hatchedAnt = new Scout(nodeLocation);
-    }
+    public void newTurn() {
 
-    public void newTurn(int turn) {
-        this.turn = turn;
+   }
 
+   public Scout createScout() {
 
+        return new Scout(nextId++, defaultLifeSpan);
 
+   }
+
+   public Soldier createSoldier() {
+        return new Soldier(nextId++, defaultLifeSpan);
+   }
+
+    public Forager createForager() {
+        return new Forager(nextId++, defaultLifeSpan);
     }
 
 }

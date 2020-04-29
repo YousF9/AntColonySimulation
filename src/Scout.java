@@ -1,10 +1,9 @@
-public class Scout extends Ant {
-    Scout(Node node) {
-        nodeLocation = node;
-
+public class Scout extends Ant  {
+    Scout(int id, int lifeSpan) {
+        super(id, lifeSpan);
     }
 
-    Scout() {
+    public void newTurn() {
 
     }
 }
