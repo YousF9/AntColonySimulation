@@ -16,6 +16,7 @@ public class Node {
     LinkedList<Scout> scoutList;
     LinkedList<Soldier> soldierList;
     LinkedList<Forager> foragerList;
+    LinkedList<Bala> balaList;
 
     Node(ColonyNodeView nodeView, int xCoordinate, int yCoordinate) {
         Random random = new Random();
@@ -56,6 +57,12 @@ public class Node {
         foragerList.add(ant);
         nodeView.setForagerCount(foragerList.size());
         nodeView.showForagerIcon();
+    }
+
+    public void addBalaAnt(Bala ant){
+        balaList.add(ant);
+        nodeView.setBalaCount(balaList.size());
+        nodeView.showBalaIcon();
     }
 
     public void setFood(int unitOfFood) {
