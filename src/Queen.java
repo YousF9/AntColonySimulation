@@ -12,7 +12,9 @@ public class Queen extends Ant {
     public void newTurn() {
 
     }
-
+    /*
+    When the queen hatches an ant, there is a 50% chance it is a forager, 25% it's a scout, and 25% it's a soldier
+     */
     public void hatch() {
         Random random = new Random();
         if (random.nextInt(4) == 0) {

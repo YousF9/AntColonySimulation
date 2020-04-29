@@ -35,6 +35,7 @@ public class Simulation implements SimulationEventListener {
         colonySimulator.newTurn(currentTurn);
         currentTurn++;
 
+        //every 10 turns = 1 day
         if (currentTurn % 10 == 0) {
             day++;
         }
