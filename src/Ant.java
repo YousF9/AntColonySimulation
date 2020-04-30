@@ -11,12 +11,10 @@ public abstract class Ant {
 
     public Ant(int id, int lifeSpan) {
         this.id = id;
-        this.lifeSpan = lifeSpan; 
+        this.lifeSpan = lifeSpan;
     }
 
-    public abstract void newTurn ();
-
-
+    public abstract void newTurn();
 
 
 }

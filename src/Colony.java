@@ -1,13 +1,18 @@
+import java.util.LinkedList;
+
 public class Colony {
 
     private ColonyView colonyView;
     private ColonyNodeView colonyNodeView;
+    LinkedList<Ant> antList;
 
     public Colony(ColonyView colonyView) {
         this.colonyView = colonyView;
+
     }
 
     public void createColony() {
+        LinkedList<Ant> antList = new LinkedList<>();
 
         //create 27x27 nodes
         for (int i = 0; i < 27; i++) {
@@ -23,10 +28,11 @@ public class Colony {
                 }
 
                 //create queen node
-                if (i == 13 && j == 13 ) {
+                if (i == 13 && j == 13) {
                     node.setFood(1000);
-                    Queen queen = new Queen();
+                    Queen queen = new Queen(antList, node);
                     node.setQueen(queen);
+                    antList.add(queen);
 
                     //create 10 soldier ants
                     for (int k = 0; k < 10; k++) {
@@ -34,7 +40,7 @@ public class Colony {
                         node.addSoldierAnt(soldier);
                     }
                     //create 4 scout ants
-                    for (int k = 0; k < 4; k++){
+                    for (int k = 0; k < 4; k++) {
                         Scout scout = queen.createScout();
                         node.addScoutAnt(scout);
                     }
@@ -49,6 +55,7 @@ public class Colony {
 
             }
         }
+
 
     }
 

@@ -30,12 +30,12 @@ public class Simulation implements SimulationEventListener {
     }
 
     public void newTurn() {
-        time =  " Day " + day + " Turn " + currentTurn;
+        time = " Day " + day + " Turn " + currentTurn;
         antSimGui.setTime(time);
         colonySimulator.newTurn(currentTurn);
         currentTurn++;
 
-        //every 10 turns = 1 day
+        //every 10 turns == 1 day
         if (currentTurn % 10 == 0) {
             day++;
         }

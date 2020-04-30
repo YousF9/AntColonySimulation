@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -21,7 +20,7 @@ public class Node {
     Node(ColonyNodeView nodeView, int xCoordinate, int yCoordinate) {
         Random random = new Random();
         if (random.nextInt(4) == 0) {
-            food = random.nextInt((1000 - 500) + 1) + 500;
+            food = random.nextInt(501) + 500;
         } else {
             food = 0;
         }
@@ -35,7 +34,7 @@ public class Node {
         foragerList = new LinkedList<>();
     }
 
-    public void setQueen(Queen queen){
+    public void setQueen(Queen queen) {
         this.queen = queen;
         nodeView.setQueen(true);
         nodeView.showQueenIcon();
@@ -47,7 +46,7 @@ public class Node {
         nodeView.showSoldierIcon();
     }
 
-    public void addScoutAnt(Scout ant){
+    public void addScoutAnt(Scout ant) {
         scoutList.add(ant);
         nodeView.setScoutCount(scoutList.size());
         nodeView.showScoutIcon();
@@ -59,7 +58,7 @@ public class Node {
         nodeView.showForagerIcon();
     }
 
-    public void addBalaAnt(Bala ant){
+    public void addBalaAnt(Bala ant) {
         balaList.add(ant);
         nodeView.setBalaCount(balaList.size());
         nodeView.showBalaIcon();
@@ -72,7 +71,6 @@ public class Node {
 
     public void setOpen() {
         nodeView.showNode();
-
     }
 
 
