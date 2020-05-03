@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Node {
@@ -16,6 +17,7 @@ public class Node {
     LinkedList<Soldier> soldierList;
     LinkedList<Forager> foragerList;
     LinkedList<Bala> balaList;
+    List<Node> adjacentNodes;
 
     Node(ColonyNodeView nodeView, int xCoordinate, int yCoordinate) {
         Random random = new Random();
@@ -74,4 +76,7 @@ public class Node {
     }
 
 
+    public void setAdjacentNodes(List<Node> adjacentNodes) {
+        this.adjacentNodes = adjacentNodes;
+    }
 }

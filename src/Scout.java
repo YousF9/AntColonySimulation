@@ -6,4 +6,6 @@ public class Scout extends Ant  {
     public void newTurn() {
 
     }
+
+
 }

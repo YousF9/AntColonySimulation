@@ -1,13 +1,17 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Colony {
 
     private ColonyView colonyView;
     private ColonyNodeView colonyNodeView;
     LinkedList<Ant> antList;
+    Node[][] nodes;
 
     public Colony(ColonyView colonyView) {
         this.colonyView = colonyView;
+        nodes = new Node[27][27];
 
     }
 
@@ -21,6 +25,7 @@ public class Colony {
                 colonyNodeView.setID(i + "," + j);
                 colonyView.addColonyNodeView(colonyNodeView, i, j);
                 Node node = new Node(colonyNodeView, i, j);
+                nodes[i][j] = node;
 
                 //display queen-adjacent nodes for simulation start
                 if ((i >= 12 && i <= 14) && (j >= 12 && j <= 14)) {
@@ -56,7 +61,31 @@ public class Colony {
             }
         }
 
+        for (int i = 0; i < 27; i++) {
+            for (int j = 0; j < 27; j++) {
+                Node currentNode = nodes[i][j];
+                List<Node> adjacentNodes = new ArrayList<>();
+                addAdjacentNode(i - 1,j - 1, adjacentNodes);
+                addAdjacentNode(i - 1,j, adjacentNodes);
+                addAdjacentNode(i - 1,j + 1, adjacentNodes);
+                addAdjacentNode(i,j - 1, adjacentNodes);
+                addAdjacentNode(i,j + 1, adjacentNodes);
+                addAdjacentNode(i + 1,j - 1, adjacentNodes);
+                addAdjacentNode(i + 1,j, adjacentNodes);
+                addAdjacentNode(i + 1,j + 1, adjacentNodes);
+                currentNode.setAdjacentNodes(adjacentNodes);
+                nodes[i][j].setOpen();
+            }
+        }
 
+    }
+
+    private void addAdjacentNode(int x, int y, List<Node> adjacentList) {
+        try {
+            Node node = nodes[x][y];
+            adjacentList.add(node);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
     }
 
     public void newTurn(int currentTurn) {
