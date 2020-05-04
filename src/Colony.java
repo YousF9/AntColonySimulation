@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Colony {
 
@@ -8,6 +6,7 @@ public class Colony {
     private ColonyNodeView colonyNodeView;
     LinkedList<Ant> antList;
     Node[][] nodes;
+    Queen queen;
 
     public Colony(ColonyView colonyView) {
         this.colonyView = colonyView;
@@ -16,7 +15,7 @@ public class Colony {
     }
 
     public void createColony() {
-        LinkedList<Ant> antList = new LinkedList<>();
+        antList = new LinkedList<>();
 
         //create 27x27 nodes
         for (int i = 0; i < 27; i++) {
@@ -29,31 +28,29 @@ public class Colony {
 
                 //display queen-adjacent nodes for simulation start
                 if ((i >= 12 && i <= 14) && (j >= 12 && j <= 14)) {
+                    node.setFood(0);
                     node.setOpen();
                 }
 
                 //create queen node
                 if (i == 13 && j == 13) {
                     node.setFood(1000);
-                    Queen queen = new Queen(antList, node);
+                    queen = new Queen(antList, node);
                     node.setQueen(queen);
                     antList.add(queen);
 
                     //create 10 soldier ants
                     for (int k = 0; k < 10; k++) {
-                        Soldier soldier = queen.createSoldier();
-                        node.addSoldierAnt(soldier);
+                        queen.createSoldier();
                     }
                     //create 4 scout ants
                     for (int k = 0; k < 4; k++) {
-                        Scout scout = queen.createScout();
-                        node.addScoutAnt(scout);
+                        queen.createScout();
                     }
 
                     //create 50 forager ants
                     for (int k = 0; k < 50; k++) {
-                        Forager forager = queen.createForager();
-                        node.addForagerAnt(forager);
+                        queen.createForager();
                     }
 
                 }
@@ -74,7 +71,7 @@ public class Colony {
                 addAdjacentNode(i + 1,j, adjacentNodes);
                 addAdjacentNode(i + 1,j + 1, adjacentNodes);
                 currentNode.setAdjacentNodes(adjacentNodes);
-                nodes[i][j].setOpen();
+                currentNode.setOpen();
             }
         }
 
@@ -89,5 +86,26 @@ public class Colony {
     }
 
     public void newTurn(int currentTurn) {
+        //loop through main ant list to have each ant take its turn
+        for (int i = 0; i < antList.size(); i++) {
+            Ant ant = antList.get(i);
+            if (ant.isAlive()) {
+                ant.newTurn(currentTurn);
+            }
+        }
+
+        Iterator<Ant> antIterator = antList.iterator();
+        while (antIterator.hasNext()) {
+            Ant ant = antIterator.next();
+
+            if (!ant.isAlive()) {
+                antIterator.remove();
+            }
+        }
+
+        Random random = new Random();
+        if (random.nextInt(100) < 3) {
+            queen.createBala(nodes[0][0]);
+        }
     }
 }

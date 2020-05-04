@@ -2,19 +2,28 @@ public abstract class Ant {
 
     int id;
     int lifeSpan;
+    boolean alive;
+    Node node;
 
-    /*
-    int turn;
-    int age;
-    Node nodeLocation;
-    boolean alive;*/
-
-    public Ant(int id, int lifeSpan) {
+    public Ant(int id, int lifeSpan, Node node) {
         this.id = id;
         this.lifeSpan = lifeSpan;
+        alive = true;
+        this.node = node;
     }
 
-    public abstract void newTurn();
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public abstract void die();
+
+    public abstract void newTurn(int currentTurn);
 
 
 }

@@ -3,17 +3,22 @@ import java.util.Random;
 
 public class Queen extends Ant {
     int nextId;
-    int defaultLifeSpan = 365;
+    private static final int DEFAULT_LIFE_SPAN = 365;
     LinkedList<Ant> antList;
 
     public Queen(LinkedList<Ant> antList, Node node) {
-        super(0, 7300);
+        super(0, 7300, node);
         this.antList = antList;
         nextId = 1;
     }
 
-    public void newTurn() {
+    public void newTurn(int currentTurn) {
+        if (currentTurn % 10 == 0) {
+            age();
+            hatch();
+        }
 
+        eat();
     }
 
     /**
@@ -21,6 +26,7 @@ public class Queen extends Ant {
      **/
     public void hatch() {
         Random random = new Random();
+
         if (random.nextInt(4) == 0) {
             createScout();
         } else if (random.nextInt(4) == 1) {
@@ -31,26 +37,52 @@ public class Queen extends Ant {
 
     }
 
-    public Scout createScout() {
-        Scout scout = new Scout(nextId, lifeSpan);
+    public void eat() {
+        int food = node.getFood();
+        if (food > 0) {
+            food--;
+            node.setFood(food);
+        } else {
+            die();
+        }
+
+    }
+
+    public void die() {
+        alive = false;
+        throw new DeadQueenException();
+    }
+
+    public void age() {
+        lifeSpan--;
+
+        if (lifeSpan == 0) {
+            die();
+        }
+    }
+
+    public void createScout() {
+        Scout scout = new Scout(nextId++, DEFAULT_LIFE_SPAN, node);
+        node.addScoutAnt(scout);
         antList.add(scout);
-        return new Scout(nextId++, defaultLifeSpan);
     }
 
-    public Soldier createSoldier() {
-        Soldier soldier = new Soldier(nextId, lifeSpan);
+    public void createSoldier() {
+        Soldier soldier = new Soldier(nextId++, DEFAULT_LIFE_SPAN, node);
+        node.addSoldierAnt(soldier);
         antList.add(soldier);
-        return new Soldier(nextId++, defaultLifeSpan);
     }
 
-    public Forager createForager() {
-        Forager forager = new Forager(nextId, lifeSpan);
+    public void createForager() {
+        Forager forager = new Forager(nextId++, DEFAULT_LIFE_SPAN, node);
+        node.addForagerAnt(forager);
         antList.add(forager);
-        return new Forager(nextId++, defaultLifeSpan);
     }
 
-    public Bala createBala() {
-        return new Bala(nextId++, defaultLifeSpan);
+    public void createBala(Node node) {
+        Bala bala = new Bala(nextId++, DEFAULT_LIFE_SPAN, node);
+        node.addBalaAnt(bala);
+        antList.add(bala);
     }
 
 }

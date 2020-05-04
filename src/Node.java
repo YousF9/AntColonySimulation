@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -8,10 +9,8 @@ public class Node {
     private int pheremone;
     private int xCoordinate;
     private int yCoordinate;
-    private Colony colony;
+    boolean open;
     ColonyNodeView nodeView;
-    boolean isMoving;
-    boolean isVisible;
     Queen queen;
     LinkedList<Scout> scoutList;
     LinkedList<Soldier> soldierList;
@@ -26,14 +25,15 @@ public class Node {
         } else {
             food = 0;
         }
-
+        nodeView.setFoodAmount(food);
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.nodeView = nodeView;
-        isVisible = false;
+        this.open = false;
         scoutList = new LinkedList<>();
         soldierList = new LinkedList<>();
         foragerList = new LinkedList<>();
+        balaList = new LinkedList<>();
     }
 
     public void setQueen(Queen queen) {
@@ -71,12 +71,84 @@ public class Node {
         nodeView.setFoodAmount(food);
     }
 
+    public int getFood() {
+        return food;
+    }
+
     public void setOpen() {
         nodeView.showNode();
+        open = true;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 
 
     public void setAdjacentNodes(List<Node> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
     }
+
+    public List<Node> getAdjacentNodes() {
+        return adjacentNodes;
+    }
+
+    public List<Node> getOpenAdjacentNodes() {
+        List<Node> openNodes = new ArrayList<>();
+        for (int i = 0; i < adjacentNodes.size(); i++) {
+            Node node = adjacentNodes.get(i);
+            if (node.isOpen()) {
+                openNodes.add(node);
+            }
+        }
+        return openNodes;
+    }
+
+    public void removeScout(Scout ant) {
+        scoutList.remove(ant);
+
+        if (scoutList.size() == 0) {
+            nodeView.hideScoutIcon();
+        }
+
+        nodeView.setScoutCount(scoutList.size());
+    }
+
+    public void removeSoldier(Soldier ant) {
+        soldierList.remove(ant);
+
+        if (soldierList.size() == 0) {
+            nodeView.hideSoldierIcon();
+        }
+
+        nodeView.setSoldierCount(soldierList.size());
+    }
+
+    public void removeBala(Bala ant) {
+        balaList.remove(ant);
+
+        if (balaList.size() == 0) {
+            nodeView.hideBalaIcon();
+        }
+
+        nodeView.setBalaCount(balaList.size());
+    }
+
+    public List<Ant> getFriendlyAnts() {
+        List<Ant> friendlyAnts = new ArrayList<>();
+
+        friendlyAnts.addAll(scoutList);
+        friendlyAnts.addAll(soldierList);
+        friendlyAnts.addAll(foragerList);
+        if (queen != null) {
+            friendlyAnts.add(queen);
+        }
+
+        return friendlyAnts;
+    }
+
+    public List<Bala> getBalaAnts() {
+        return balaList;
+    }
+
 }

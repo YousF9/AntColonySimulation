@@ -27,6 +27,16 @@ public class Simulation implements SimulationEventListener {
             newTurn();
         }
 
+        if (simEvent.getEventType() == SimulationEvent.RUN_EVENT) {
+            try {
+                while (true) {
+                    newTurn();
+                }
+            } catch (DeadQueenException e) {
+                System.out.println("The queen is dead.");
+            }
+        }
+
     }
 
     public void newTurn() {
