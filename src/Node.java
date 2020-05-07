@@ -3,12 +3,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Node {
+public class Node implements Comparable {
 
     private int food;
-    private int pheremone;
-    private int xCoordinate;
-    private int yCoordinate;
+    private Integer pheromone;
     boolean open;
     ColonyNodeView nodeView;
     Queen queen;
@@ -18,7 +16,7 @@ public class Node {
     LinkedList<Bala> balaList;
     List<Node> adjacentNodes;
 
-    Node(ColonyNodeView nodeView, int xCoordinate, int yCoordinate) {
+    Node(ColonyNodeView nodeView) {
         Random random = new Random();
         if (random.nextInt(4) == 0) {
             food = random.nextInt(501) + 500;
@@ -26,14 +24,14 @@ public class Node {
             food = 0;
         }
         nodeView.setFoodAmount(food);
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
         this.nodeView = nodeView;
         this.open = false;
         scoutList = new LinkedList<>();
         soldierList = new LinkedList<>();
         foragerList = new LinkedList<>();
         balaList = new LinkedList<>();
+        pheromone = 0;
+        nodeView.setPheromoneLevel(pheromone);
     }
 
     public void setQueen(Queen queen) {
@@ -73,6 +71,23 @@ public class Node {
 
     public int getFood() {
         return food;
+    }
+
+    public void addPheromone(int pheromone) {
+
+        if (this.pheromone < 1000) {
+            this.pheromone += pheromone;
+            nodeView.setPheromoneLevel(this.pheromone);
+        }
+    }
+
+    public Integer getPheromone() {
+        return pheromone;
+    }
+
+    public void setPheromone(int pheromone) {
+        this.pheromone = pheromone;
+        nodeView.setPheromoneLevel(this.pheromone);
     }
 
     public void setOpen() {
@@ -124,6 +139,16 @@ public class Node {
         nodeView.setSoldierCount(soldierList.size());
     }
 
+    public void removeForager(Forager ant) {
+        foragerList.remove(ant);
+
+        if (foragerList.size() == 0) {
+            nodeView.hideForagerIcon();
+        }
+
+        nodeView.setForagerCount(foragerList.size());
+    }
+
     public void removeBala(Bala ant) {
         balaList.remove(ant);
 
@@ -149,6 +174,11 @@ public class Node {
 
     public List<Bala> getBalaAnts() {
         return balaList;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return ((Node) o).getPheromone().compareTo(this.pheromone);
     }
 
 }

@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Simulation implements SimulationEventListener {
 
     AntSimGUI antSimGui;
@@ -6,13 +8,13 @@ public class Simulation implements SimulationEventListener {
     int currentTurn = 0;
     int day = 0;
     String time = "";
+    Thread thread;
 
     //Simulation Constructor
     Simulation(Colony colonySimulator, AntSimGUI antSimGUI) {
         this.colonySimulator = colonySimulator;
         this.antSimGui = antSimGUI;
         isQueenAlive = true;
-
     }
 
     @Override
@@ -28,13 +30,24 @@ public class Simulation implements SimulationEventListener {
         }
 
         if (simEvent.getEventType() == SimulationEvent.RUN_EVENT) {
-            try {
-                while (true) {
-                    newTurn();
+
+            thread = new Thread() {
+                public void run() {
+                    try {
+                        while (true) {
+                            newTurn();
+                            Thread.sleep(50);
+                        }
+                    } catch (DeadQueenException e) {
+                        System.out.println("The queen is dead.");
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            } catch (DeadQueenException e) {
-                System.out.println("The queen is dead.");
-            }
+            };
+            thread.start();
         }
 
     }

@@ -23,7 +23,7 @@ public class Colony {
                 ColonyNodeView colonyNodeView = new ColonyNodeView();
                 colonyNodeView.setID(i + "," + j);
                 colonyView.addColonyNodeView(colonyNodeView, i, j);
-                Node node = new Node(colonyNodeView, i, j);
+                Node node = new Node(colonyNodeView);
                 nodes[i][j] = node;
 
                 //display queen-adjacent nodes for simulation start
@@ -71,7 +71,6 @@ public class Colony {
                 addAdjacentNode(i + 1,j, adjacentNodes);
                 addAdjacentNode(i + 1,j + 1, adjacentNodes);
                 currentNode.setAdjacentNodes(adjacentNodes);
-                currentNode.setOpen();
             }
         }
 
@@ -106,6 +105,16 @@ public class Colony {
         Random random = new Random();
         if (random.nextInt(100) < 3) {
             queen.createBala(nodes[0][0]);
+        }
+
+        if ((currentTurn % 10) == 0) {
+            for (int i = 0; i < 27; i++) {
+                for (int j = 0; j < 27; j++) {
+                    int pheromoneLevel = nodes[i][j].getPheromone();
+                    pheromoneLevel /= 2;
+                    nodes[i][j].setPheromone(pheromoneLevel);
+                }
+            }
         }
     }
 }
